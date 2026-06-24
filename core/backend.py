@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
+from gamdl.downloader.enums import ArtistAutoSelect
 
 import httpx
 
@@ -980,7 +981,7 @@ class LocalAppleMusicBackend:
                 "AppleMusicMusicVideoDownloader": downloader_mod.AppleMusicMusicVideoDownloader,
                 "AppleMusicSongDownloader": downloader_mod.AppleMusicSongDownloader,
                 "AppleMusicUploadedVideoDownloader": downloader_mod.AppleMusicUploadedVideoDownloader,
-                "ArtistAutoSelect": downloader_mod.ArtistAutoSelect,
+                "ArtistAutoSelect": ArtistAutoSelect,
                 "AppleMusicInterface": interface_mod.AppleMusicInterface,
                 "AppleMusicMusicVideoInterface": interface_mod.AppleMusicMusicVideoInterface,
                 "AppleMusicSongInterface": interface_mod.AppleMusicSongInterface,
