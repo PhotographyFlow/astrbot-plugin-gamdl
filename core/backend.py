@@ -967,11 +967,34 @@ class LocalAppleMusicBackend:
                 api_mod = importlib.import_module("gamdl.api")
                 downloader_mod = importlib.import_module("gamdl.downloader")
                 interface_mod = importlib.import_module("gamdl.interface")
-                enums_mod = importlib.import_module("gamdl.downloader.enums")
             except Exception as exc:
                 raise ServiceError(
                     "无法导入 gamdl，请确认 requirements 已安装（pip install -r requirements.txt）。"
                 ) from exc
+            
+             # ---------- 自己定义 ArtistAutoSelect 枚举 ----------
+            import enum
+            class ArtistAutoSelect(enum.Enum):
+                MAIN_ALBUMS = ("albums", "full-albums")
+                COMPILATION_ALBUMS = ("albums", "compilation-albums")
+                LIVE_ALBUMS = ("albums", "live-albums")
+                SINGLES_EPS = ("albums", "singles")
+                ALL_ALBUMS = ("albums", "all")
+                TOP_SONGS = ("songs", "top-songs")
+                MUSIC_VIDEOS = ("music-videos", "music-videos")
+
+                def __init__(self, relation_key, type_key):
+                    self.path_key = (relation_key, type_key)
+
+                @classmethod
+                def _missing_(cls, value):
+                    if isinstance(value, str):
+                        try:
+                            return cls[value.upper()]
+                        except KeyError:
+                            pass
+                    return None
+            # ------------------------------------------------
 
             self._modules = {
                 "AppleMusicApi": api_mod.AppleMusicApi,
@@ -981,7 +1004,7 @@ class LocalAppleMusicBackend:
                 "AppleMusicMusicVideoDownloader": downloader_mod.AppleMusicMusicVideoDownloader,
                 "AppleMusicSongDownloader": downloader_mod.AppleMusicSongDownloader,
                 "AppleMusicUploadedVideoDownloader": downloader_mod.AppleMusicUploadedVideoDownloader,
-                "ArtistAutoSelect": enums_mod.ArtistAutoSelect,
+                "ArtistAutoSelect": ArtistAutoSelect,
                 "AppleMusicInterface": interface_mod.AppleMusicInterface,
                 "AppleMusicMusicVideoInterface": interface_mod.AppleMusicMusicVideoInterface,
                 "AppleMusicSongInterface": interface_mod.AppleMusicSongInterface,
