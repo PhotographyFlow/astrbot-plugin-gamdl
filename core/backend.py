@@ -11,7 +11,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
-from gamdl.downloader.enums import ArtistAutoSelect
 
 import httpx
 
@@ -968,6 +967,7 @@ class LocalAppleMusicBackend:
                 api_mod = importlib.import_module("gamdl.api")
                 downloader_mod = importlib.import_module("gamdl.downloader")
                 interface_mod = importlib.import_module("gamdl.interface")
+                enums_mod = importlib.import_module("gamdl.downloader.enums")
             except Exception as exc:
                 raise ServiceError(
                     "无法导入 gamdl，请确认 requirements 已安装（pip install -r requirements.txt）。"
@@ -981,7 +981,7 @@ class LocalAppleMusicBackend:
                 "AppleMusicMusicVideoDownloader": downloader_mod.AppleMusicMusicVideoDownloader,
                 "AppleMusicSongDownloader": downloader_mod.AppleMusicSongDownloader,
                 "AppleMusicUploadedVideoDownloader": downloader_mod.AppleMusicUploadedVideoDownloader,
-                "ArtistAutoSelect": ArtistAutoSelect,
+                "ArtistAutoSelect": enums_mod.ArtistAutoSelect,
                 "AppleMusicInterface": interface_mod.AppleMusicInterface,
                 "AppleMusicMusicVideoInterface": interface_mod.AppleMusicMusicVideoInterface,
                 "AppleMusicSongInterface": interface_mod.AppleMusicSongInterface,
